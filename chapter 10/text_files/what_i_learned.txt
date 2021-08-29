@@ -1,0 +1,6 @@
+loops
+if else statements
+reading files
+lists
+classes
+objects
