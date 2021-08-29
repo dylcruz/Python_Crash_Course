@@ -1,0 +1,1 @@
+This is my work from when I tried to learn Python a few years ago. I will most likely come back to this and finish / clean up the code once I'm done with "Automate the Boring Stuff".
