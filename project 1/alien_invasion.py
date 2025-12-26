@@ -1,9 +1,11 @@
+import random
 import sys
 from time import sleep
 
 import pygame
 
 from alien import Alien
+from alien_bullet import AlienBullet
 from bullet import Bullet
 from button import Button
 from game_stats import GameStats
@@ -30,6 +32,7 @@ class AlienInvasion:
         self.sb = Scoreboard(self)
         self.ship = Ship(self)
         self.bullets = pygame.sprite.Group()
+        self.alien_bullets = pygame.sprite.Group()
         self.aliens = pygame.sprite.Group()
         self._create_fleet()
 
@@ -48,6 +51,7 @@ class AlienInvasion:
                 self.ship.update()
                 self._update_bullets()
                 self._update_aliens()
+                self._update_alien_bullets()
 
             self._update_screen()
             self.clock.tick(60)
@@ -122,9 +126,13 @@ class AlienInvasion:
         
         for bullet in self.bullets.sprites():
             bullet.draw_bullet()
+            
         self.ship.blitme()
         self.aliens.draw(self.screen)
         
+        for bullet in self.alien_bullets.sprites():
+            bullet.draw_bullet()
+
         # Draw the score information
         self.sb.show_scoreboard()
         
@@ -168,8 +176,12 @@ class AlienInvasion:
         if not self.aliens:
             self._start_new_level()
 
+    def _check_ship_bullet_collisions(self):
+        if pygame.sprite.spritecollideany(self.ship, self.alien_bullets):
+            self._ship_hit()
+
     def _start_new_level(self):
-        self.bullets.empty()
+        self._empty_sprites()
         self._create_fleet()
         self.settings.increase_speed()
 
@@ -211,8 +223,7 @@ class AlienInvasion:
         self.game_active = True
         
         # Get rid of any remaining bullets and aliens
-        self.aliens.empty()
-        self.bullets.empty()
+        self._empty_sprites()
 
         # Create a new fleet and center the ship
         self._create_fleet()
@@ -225,6 +236,7 @@ class AlienInvasion:
         """Update the positions of all aliens in the fleet"""
         self._check_fleet_edges()
         self.aliens.update()
+        self._alien_fire_bullet()
 
         # Look for alien-ship collisions
         if pygame.sprite.spritecollideany(self.ship, self.aliens):
@@ -240,8 +252,7 @@ class AlienInvasion:
             self.sb.prep_ships()
 
             # Get rid of remaining bullets and aliens
-            self.bullets.empty()
-            self.aliens.empty()
+            self._empty_sprites()
 
             # Create a new fleet and center the ship
             self._create_fleet()
@@ -271,6 +282,29 @@ class AlienInvasion:
         for alien in self.aliens.sprites():
             alien.rect.y += self.settings.fleet_drop_speed
         self.settings.fleet_direction *= -1
+
+    def _alien_fire_bullet(self):
+        if len(self.alien_bullets) < self.settings.alien_bullets_allowed:
+            alien = random.choice(self.aliens.sprites())
+            new_bullet = AlienBullet(self, alien)
+            self.alien_bullets.add(new_bullet)
+
+    def _update_alien_bullets(self):
+        """Update position of bullets and get rid of old bullets"""
+        # Update bullet positions
+        self.alien_bullets.update()
+
+        self._check_ship_bullet_collisions()
+
+        # Get rid of bullets that have disappeared
+        for bullet in self.alien_bullets.copy():
+            if bullet.rect.top >= self.screen.get_rect().bottom:
+                self.alien_bullets.remove(bullet)
+
+    def _empty_sprites(self):
+        self.aliens.empty()
+        self.bullets.empty()
+        self.alien_bullets.empty()
 
 if __name__ == '__main__':
     # Make a game instance, and run the game.
