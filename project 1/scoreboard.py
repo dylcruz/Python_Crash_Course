@@ -2,6 +2,7 @@ import pygame.font
 from pygame.sprite import Group
 from ship import Ship
 
+
 class Scoreboard:
     """A class to report scoring information."""
 
@@ -25,10 +26,7 @@ class Scoreboard:
         rounded_score = round(self.stats.score, -1)
         score_str = f"Score: {rounded_score:,}"
         self.score_image = self.font.render(
-            score_str,
-            True,
-            self.text_color,
-            self.settings.bg_color
+            score_str, True, self.text_color, self.settings.bg_color
         )
 
         # Display the score at the top right of the screen
@@ -41,10 +39,7 @@ class Scoreboard:
         high_score = round(self.stats.high_score, -1)
         high_score_str = f"High Score: {high_score:,}"
         self.high_score_image = self.font.render(
-            high_score_str,
-            True,
-            self.text_color,
-            self.settings.bg_color
+            high_score_str, True, self.text_color, self.settings.bg_color
         )
 
         # Center the high schore at the top of the screen.
@@ -56,10 +51,7 @@ class Scoreboard:
         """Turn the level into a rendered image"""
         level_str = "Level: " + str(self.stats.level)
         self.level_image = self.font.render(
-            level_str,
-            True,
-            self.text_color,
-            self.settings.bg_color
+            level_str, True, self.text_color, self.settings.bg_color
         )
 
         # Center the high schore at the top of the screen.
@@ -88,7 +80,7 @@ class Scoreboard:
         if self.stats.score > self.stats.high_score:
             self.stats.high_score = self.stats.score
             self.prep_high_score()
-    
+
     def prep_images(self):
         self.prep_score()
         self.prep_level()

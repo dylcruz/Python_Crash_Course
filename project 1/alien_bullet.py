@@ -1,8 +1,9 @@
 import pygame
 from pygame.sprite import Sprite
 
+
 class AlienBullet(Sprite):
-    """ A class to manage bullets fired from aliens."""
+    """A class to manage bullets fired from aliens."""
 
     def __init__(self, ai_game, alien):
         """Create a bullet object at the Alien's current position"""
@@ -12,8 +13,9 @@ class AlienBullet(Sprite):
         self.color = self.settings.bullet_color
 
         # Create a bullet rect at (0, 0) and then set the correct position
-        self.rect = pygame.Rect(0, 0, self.settings.bullet_width,
-                                self.settings.bullet_height)
+        self.rect = pygame.Rect(
+            0, 0, self.settings.bullet_width, self.settings.bullet_height
+        )
         self.rect.midbottom = alien.rect.midbottom
 
         # Store the bullet's position as a float

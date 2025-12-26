@@ -22,7 +22,7 @@ class Settings:
         self.fleet_drop_speed = 10
         # fleet direction of 1 represents right, -1 represents lefts
         self.fleet_direction = 1
-        
+
         # How quickly the game speeds up
         self.speedup_scale = 1.1
         # How quickly the alien point value increases
@@ -30,11 +30,26 @@ class Settings:
 
         # Set difficulty to medium by default
         self.difficulty_configs = {
-            'easy': {'ship_speed': 2, 'bullet_speed': 3, 'alien_speed': 0.5, 'alien_points': 35},
-            'medium': {'ship_speed': 1.5, 'bullet_speed': 2.5, 'alien_speed': 1, 'alien_points': 50},
-            'hard': {'ship_speed': 1.5, 'bullet_speed': 2.5, 'alien_speed': 1.25, 'alien_points': 65}
+            "easy": {
+                "ship_speed": 2,
+                "bullet_speed": 3,
+                "alien_speed": 0.5,
+                "alien_points": 35,
+            },
+            "medium": {
+                "ship_speed": 1.5,
+                "bullet_speed": 2.5,
+                "alien_speed": 1,
+                "alien_points": 50,
+            },
+            "hard": {
+                "ship_speed": 1.5,
+                "bullet_speed": 2.5,
+                "alien_speed": 1.25,
+                "alien_points": 65,
+            },
         }
-        self.set_difficulty('medium')
+        self.set_difficulty("medium")
 
     def set_difficulty(self, difficulty):
         """Change settings based on difficulty"""
