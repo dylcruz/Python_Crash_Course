@@ -49,7 +49,12 @@ class Settings:
                 "alien_points": 65,
             },
         }
-        self.set_difficulty("medium")
+
+        # Set dynamic settings
+        self.difficulty = "medium"
+        self.config = self.difficulty_configs[self.difficulty]
+        self.ship_speed, self.bullet_speed = 1.5, 2.5
+        self.alien_speed, self.alien_points = 1, 50
 
     def set_difficulty(self, difficulty):
         """Change settings based on difficulty"""

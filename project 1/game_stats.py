@@ -13,6 +13,7 @@ class GameStats:
         self.level = 1
 
     def load_high_score(self):
+        """Loads high score if a saved score exists, otherwise sets to zero."""
         try:
             with open("high_score.txt", "r", encoding="utf-8") as file:
                 self.high_score = int(file.readline())
