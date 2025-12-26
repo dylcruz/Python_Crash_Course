@@ -8,9 +8,6 @@ class Settings:
         self.screen_height = 400
         self.bg_color = (230, 230, 230)
 
-        # Ship settings
-        self.ship_speed = 1.5
-
         # Bullet settings
         self.bullet_speed = 10
         self.bullet_width = 15
@@ -20,5 +17,14 @@ class Settings:
         self.bullet_misses_allowed = 3
 
         # Target settings
-        self.target_speed = 3
         self.target_direction = 1
+
+        self.speed_increase = 1.1
+
+    def initialize_dynamic_settings(self):
+        self.target_speed = 3
+        self.ship_speed = 1.5
+
+    def speed_up(self):
+        self.target_speed *= self.speed_increase
+        self.ship_speed *= self.speed_increase

@@ -120,6 +120,7 @@ class TargetPractice:
         for bullet in self.bullets:
             if self.target.rect.colliderect(bullet.rect):
                 self.bullets.remove(bullet)
+                self.stats.target_hits += 1
 
     def _update_target(self):
         """Updates the targets position"""
@@ -136,6 +137,7 @@ class TargetPractice:
     def _start_game(self):
         # Reset the game statistics
         self.stats.reset_stats()
+        self.settings.initialize_dynamic_settings()
         self.game_active = True
         
         # Set up game
@@ -146,6 +148,10 @@ class TargetPractice:
         pygame.mouse.set_visible(False)
 
     def _check_game(self):
+        if self.stats.target_hits > 2:
+            self.stats.reset_stats()
+            self.settings.speed_up()
+            return
         if self.stats.bullets_left < 1:
             self.game_active = False
             pygame.mouse.set_visible(True)

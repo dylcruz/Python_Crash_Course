@@ -135,8 +135,8 @@ class AlienInvasion:
 		# at 1.5X speed.
 		if not self.aliens:
 			self.bullets.empty()
-			self.settings.alien_speed *= 1.5
 			self._create_fleet()
+			self.settings.increase_speed()
 
 	def _create_alien(self, x_position, y_position):
 		"""Creat an alien and place it in the fleet"""
@@ -167,6 +167,7 @@ class AlienInvasion:
 	def _start_game(self):
 		# Reset the game statistics
 		self.stats.reset_stats()
+		self.settings.initialize_dynamic_settings()
 		self.game_active = True
 		
 		# Get rid of any remaining bullets and aliens
