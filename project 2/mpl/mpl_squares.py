@@ -1,9 +1,11 @@
 import matplotlib.pyplot as plt
 
-squares = [x**2 for x in range(0, 21)]
+input_values = [x for x in range(1, 6)]
+squares = [x**2 for x in range(1, 6)]
 
+plt.style.use("Solarize_Light2")
 fig, ax = plt.subplots()
-ax.plot(squares, linewidth=3)
+ax.plot(input_values, squares, linewidth=3)
 
 # Set the chart title and label axes.
 ax.set_title("Square Numbers", fontsize=24)
