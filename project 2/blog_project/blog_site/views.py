@@ -1,0 +1,56 @@
+from django.shortcuts import redirect, render
+
+from .forms import BlogForm, BlogEntryForm
+from .models import Blog, BlogEntry
+
+def index(request):
+    return render(request, 'blog_site/index.html')
+
+def blogs(request):
+    blogs = Blog.objects.order_by('date_added')
+    context = {"blogs": blogs}
+    return render(request, "blog_site/blogs.html", context)
+
+def blog(request, blog_id):
+    blog = Blog.objects.get(id=blog_id)
+    entries = blog.blogentry_set.order_by('date_added')
+    context = {"blog": blog, "entries": entries}
+    return render(request, "blog_site/blog.html", context)
+
+def create_blog(request):
+    if request.method != 'POST':
+        form = BlogForm()
+    else:
+        form = BlogForm(data=request.POST) 
+        if form.is_valid():
+            form.save()
+            return redirect('blog_site:blogs')
+    context = {'form': form}
+    return render(request, "blog_site/create_blog.html", context)
+
+def create_entry(request, blog_id):
+    blog = Blog.objects.get(id=blog_id)
+    if request.method != 'POST':
+        form = BlogEntryForm()
+    else:
+        form = BlogEntryForm(data=request.POST)
+        if form.is_valid():
+            new_entry = form.save(commit=False)
+            new_entry.blog = blog
+            form.save()
+            return redirect('blog_site:blog', blog_id=blog_id)
+    context = {'form': form, 'blog': blog}
+    return render(request, 'blog_site/create_entry.html', context)
+
+def edit_entry(request, entry_id):
+    entry = BlogEntry.objects.get(id=entry_id)
+    blog = entry.blog
+    if request.method != 'POST':
+        form = BlogEntryForm(instance=entry)
+    else:
+        form = BlogEntryForm(data=request.POST, instance=entry)
+        if form.is_valid():
+            form.save()
+            return redirect('blog_site:blog', blog_id=blog.id)
+    context = {"form": form, "entry": entry, "blog": blog}
+    return render(request, "blog_site/edit_entry.html", context)
